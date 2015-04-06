@@ -6,5 +6,7 @@ endif (POLICY CMP0043)
 
 project(cncuv)
 
-add_executable(cncuv.test test.cpp)
+include_directories("${PROJECT_SOURCE_DIR}")
+
+add_executable(cncuv.test test.cpp cnc.h)
 

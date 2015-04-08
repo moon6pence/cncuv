@@ -20,6 +20,8 @@ public:
 
     template <typename UserStep>
     void prescribes(const StepCollection<UserStep> &stepCollection);
+
+    void put(const Tag &t);
 };
 
 // ItemCollection
@@ -29,6 +31,9 @@ class ItemCollection
 public:
     template <typename Derived>
     ItemCollection(Context<Derived> &context);
+
+    void put(const Tag &tag, const Item &item);
+    void get(const Tag &tag, Item &item) const;
 };
 
 // StepCollection
@@ -36,6 +41,8 @@ template <typename UserStep>
 class StepCollection
 {
 public:
+    typedef UserStep step_type;
+
     template <typename Derived>
     StepCollection(Context<Derived> &context);
 
@@ -47,6 +54,9 @@ public:
 
     template <typename Tag>
     void controls(TagCollection<Tag> &tagCollection);
+
+private:
+    const step_type step_;
 };
 
 // Context

@@ -15,6 +15,11 @@ void TagCollection<Tag>::prescribes(const StepCollection<UserStep> &stepCollecti
 {
 }
 
+template <typename Tag>
+void TagCollection<Tag>::put(const Tag &t)
+{
+}
+
 } // namespace CnC
 
 #endif // TAG_COLLECTION_H_

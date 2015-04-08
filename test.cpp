@@ -6,7 +6,7 @@ TEST_CASE("Hello World!", "[hello]")
     REQUIRE((1 + 1) == 2);
 }
 
-#include <cnc.h>
+#include <cnc/cnc.h>
 
 struct FibContext;
 

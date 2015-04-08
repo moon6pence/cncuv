@@ -8,5 +8,9 @@ project(cncuv)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 
-add_executable(cncuv.test test.cpp cnc.h)
-
+add_executable(cncuv.test 
+    test.cpp 
+    cnc/TagCollection.h
+    cnc/ItemCollection.h
+    cnc/StepCollection.h
+    cnc/cnc.h)

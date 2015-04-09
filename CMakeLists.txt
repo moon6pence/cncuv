@@ -13,4 +13,5 @@ add_executable(cncuv.test
     cnc/TagCollection.h
     cnc/ItemCollection.h
     cnc/StepCollection.h
+    cnc/StepLauncher.h
     cnc/cnc.h)

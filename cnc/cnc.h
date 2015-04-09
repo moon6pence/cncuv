@@ -1,7 +1,10 @@
 #ifndef CNC_H_
 #define CNC_H_
 
+#include "StepLauncher.h"
+
 #include <map>
+#include <memory>
 
 namespace CnC {
 
@@ -24,6 +27,9 @@ public:
     void prescribes(const StepCollection<UserStep> &stepCollection);
 
     void put(const Tag &t);
+
+private:
+    std::unique_ptr<StepLauncherBase> _stepLauncher;
 };
 
 // ItemCollection

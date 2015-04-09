@@ -23,13 +23,13 @@ public:
     template <typename Derived>
     TagCollection(Context<Derived> &context);
 
-    template <typename UserStep>
-    void prescribes(const StepCollection<UserStep> &stepCollection);
+    template <typename UserStep, typename Arg>
+    void prescribes(const StepCollection<UserStep> &stepCollection, Arg &arg);
 
     void put(const Tag &t);
 
 private:
-    std::unique_ptr<StepLauncherBase> _stepLauncher;
+    std::unique_ptr<StepLauncherBase<Tag>> _stepLauncher;
 };
 
 // ItemCollection
@@ -52,8 +52,6 @@ template <typename UserStep>
 class StepCollection
 {
 public:
-    typedef UserStep step_type;
-
     template <typename Derived>
     StepCollection(Context<Derived> &context);
 
@@ -66,8 +64,7 @@ public:
     template <typename Tag>
     void controls(TagCollection<Tag> &tagCollection);
 
-private:
-    const step_type _step;
+    const UserStep step;
 };
 
 // Context

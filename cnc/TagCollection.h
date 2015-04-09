@@ -10,17 +10,20 @@ TagCollection<Tag>::TagCollection(Context<Derived> &context)
 }
 
 template <typename Tag>
-template <typename UserStep>
-void TagCollection<Tag>::prescribes(const StepCollection<UserStep> &stepCollection)
+template <typename UserStep, typename Arg>
+void TagCollection<Tag>::prescribes(const StepCollection<UserStep> &stepCollection, Arg &arg)
 {
     // Initiate new step launcher
-    StepLauncherBase *stepLauncher = new StepLauncher<UserStep>(stepCollection);
+    StepLauncherBase<Tag> *stepLauncher = new StepLauncher<Tag, UserStep, Arg>(stepCollection, arg);
     _stepLauncher.reset(stepLauncher);
 }
 
 template <typename Tag>
-void TagCollection<Tag>::put(const Tag &t)
+void TagCollection<Tag>::put(const Tag &tag)
 {
+    if (!_stepLauncher) return;
+
+    _stepLauncher->executeStep(tag);
 }
 
 } // namespace CnC

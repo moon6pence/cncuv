@@ -8,28 +8,32 @@ template <typename UserStep>
 class StepCollection;
 
 // StepLauncherBase
+template <typename Tag>
 class StepLauncherBase
 {
+public:
+    virtual void executeStep(const Tag &tag) = 0;
 };
 
 // StepLauncher
-template <typename UserStep>
-class StepLauncher : public StepLauncherBase
+template <typename Tag, typename UserStep, typename Arg>
+class StepLauncher : public StepLauncherBase<Tag>
 {
 public:
-    StepLauncher(const StepCollection<UserStep> &stepCollection);
+    StepLauncher(const StepCollection<UserStep> &stepCollection, Arg &arg) :
+        _stepCollection(stepCollection), _arg(arg)
+    {
+    }
+
+    void executeStep(const Tag &tag) override
+    {
+        _stepCollection.step.execute(tag, _arg);
+    }
 
 private:
     const StepCollection<UserStep> &_stepCollection;
+    Arg &_arg;
 };
-
-// Implementation
-
-template <typename UserStep>
-inline StepLauncher<UserStep>::StepLauncher(const StepCollection<UserStep> &stepCollection) :
-    _stepCollection(stepCollection)
-{
-}
 
 } // namespace CnC
 

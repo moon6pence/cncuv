@@ -1,6 +1,8 @@
 #ifndef CNC_H_
 #define CNC_H_
 
+#include <map>
+
 namespace CnC {
 
 // forward declarations
@@ -29,11 +31,14 @@ template <typename Tag, typename Item>
 class ItemCollection
 {
 public:
-    template <typename Derived>
-    ItemCollection(Context<Derived> &context);
-
     void put(const Tag &tag, const Item &item);
     void get(const Tag &tag, Item &item) const;
+
+    bool empty() const;
+    size_t size() const;
+
+private:
+    std::map<Tag, Item> _map;
 };
 
 // StepCollection
@@ -56,7 +61,7 @@ public:
     void controls(TagCollection<Tag> &tagCollection);
 
 private:
-    const step_type step_;
+    const step_type _step;
 };
 
 // Context

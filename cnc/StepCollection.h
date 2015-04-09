@@ -6,7 +6,7 @@ namespace CnC {
 template <typename UserStep>
 template <typename Derived>
 StepCollection<UserStep>::StepCollection(Context<Derived> &context) : 
-    step_(UserStep())
+    _step(UserStep())
 {
 }
 

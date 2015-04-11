@@ -8,6 +8,10 @@ project(cncuv)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 
+# libuv
+include_directories("${PROJECT_SOURCE_DIR}/libuv/include")
+link_directories("${PROJECT_SOURCE_DIR}/libuv/lib")
+
 add_executable(cncuv.test 
     test.cpp 
     cnc/TagCollection.h
@@ -15,3 +19,5 @@ add_executable(cncuv.test
     cnc/StepCollection.h
     cnc/StepLauncher.h
     cnc/cnc.h)
+
+target_link_libraries(cncuv.test libuv Ws2_32 psapi Iphlpapi)

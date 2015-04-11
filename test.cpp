@@ -1,9 +1,27 @@
+#include <uv.h>
+
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
 TEST_CASE("Hello World!", "[hello]") 
 {
     REQUIRE((1 + 1) == 2);
+}
+
+static void callback(uv_write_t *req, int status)
+{
+    printf("Hello from Callback.\n");
+}
+
+TEST_CASE("Hello libuv", "[libuv]")
+{
+    uv_tty_t tty;
+    uv_write_t req;
+    int ret = uv_tty_init(uv_default_loop(), &tty, 1, 0);
+
+    uv_buf_t bufs[] = { uv_buf_init("Hello UV!\n", 10) };
+    ret = uv_write(&req, (uv_stream_t*)&tty, bufs, 1, callback);
+    uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 }
 
 #include <cnc/cnc.h>
@@ -71,7 +89,7 @@ int FibStep::execute(const int &tag, FibContext &context) const
             fib_type f_1; context.fibs.get(tag - 1, f_1);
             fib_type f_2; context.fibs.get(tag - 2, f_2);
 
-            std::cout << f_1 << " + " << f_2 << " = " << (f_1 + f_2) << std::endl;
+            // std::cout << f_1 << " + " << f_2 << " = " << (f_1 + f_2) << std::endl;
 
             // put our result
             context.fibs.put(tag, f_1 + f_2);

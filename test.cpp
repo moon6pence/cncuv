@@ -108,7 +108,8 @@ struct SimpleContext : public CnC::Context<SimpleContext>
 
     SimpleContext() : CnC::Context<SimpleContext>(), 
         tags(*this), 
-        steps(*this)
+        steps(*this), 
+        result(0)
     {
         tags.prescribes(steps, *this);
     }
@@ -124,8 +125,11 @@ TEST_CASE("Simple step execution", "[StepCollection]")
 {
     SimpleContext context;
     context.tags.put(7);
+    uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     REQUIRE(context.result == 8);
 }
+
+#if 0
 
 struct FibContext;
 
@@ -200,3 +204,5 @@ TEST_CASE("Get fibonacci number", "[fib]")
     // check result
     REQUIRE(result == 267914296);
 }
+
+#endif

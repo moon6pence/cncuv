@@ -14,7 +14,8 @@ template <typename UserStep, typename Arg>
 void TagCollection<Tag>::prescribes(const StepCollection<UserStep> &stepCollection, Arg &arg)
 {
     // Initiate new step launcher
-    StepLauncherBase<Tag> *stepLauncher = new StepLauncher<Tag, UserStep, Arg>(stepCollection, arg);
+    // StepLauncherBase<Tag> *stepLauncher = new StepLauncher<Tag, UserStep, Arg>(stepCollection, arg);
+    StepLauncherBase<Tag> *stepLauncher = new StepLauncherAsync<Tag, UserStep, Arg>(stepCollection, arg);
     _stepLauncher.reset(stepLauncher);
 }
 

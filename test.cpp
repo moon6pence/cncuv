@@ -92,6 +92,41 @@ TEST_CASE("Put and get item", "[ItemCollection]")
     REQUIRE(item == "one");
 }
 
+struct SimpleContext;
+
+struct SimpleStep
+{
+    int execute(const int &tag, SimpleContext &context) const;
+};
+
+struct SimpleContext : public CnC::Context<SimpleContext>
+{
+    CnC::TagCollection<int> tags;
+    CnC::StepCollection<SimpleStep> steps;
+
+    int result;
+
+    SimpleContext() : CnC::Context<SimpleContext>(), 
+        tags(*this), 
+        steps(*this)
+    {
+        tags.prescribes(steps, *this);
+    }
+};
+
+int SimpleStep::execute(const int &tag, SimpleContext &context) const
+{
+    context.result = tag + 1;
+    return 0;
+}
+
+TEST_CASE("Simple step execution", "[StepCollection]")
+{
+    SimpleContext context;
+    context.tags.put(7);
+    REQUIRE(context.result == 8);
+}
+
 struct FibContext;
 
 // declare data type for fibonacci

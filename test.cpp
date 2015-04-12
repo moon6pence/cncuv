@@ -41,6 +41,35 @@ TEST_CASE("Test work queue", "[libuv]")
     REQUIRE(n == (3 + 1));
 }
 
+#include <functional>
+
+void add_one(int &n)
+{
+    n = n + 1;
+    std::cout << n << std::endl;
+}
+
+void run_function(uv_work_t *req)
+{
+    std::function<void()> &func = *(std::function<void()> *)req->data;
+    func();
+}
+
+TEST_CASE("Test work queue with std::function", "[libuv]")
+{
+    int n = 4;
+    std::function<void()> func = std::bind(add_one, std::ref(n));
+    func(); // direct call binded function
+    REQUIRE(n == 5);
+
+    // async call
+    uv_work_t req;
+    req.data = &func;
+    uv_queue_work(uv_default_loop(), &req, run_function, nullptr);
+    uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+    REQUIRE(n == 6);
+}
+
 #include <cnc/cnc.h>
 
 TEST_CASE("Put and get item", "[ItemCollection]")

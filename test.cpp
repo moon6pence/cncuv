@@ -142,8 +142,6 @@ TEST_CASE("Iterative step execution", "[StepCollection]")
     REQUIRE(context.sum == 5050);
 }
 
-#if 0
-
 struct FibContext;
 
 // declare data type for fibonacci
@@ -208,7 +206,7 @@ TEST_CASE("Get fibonacci number", "[fib]")
         context.tags.put(i);
 
     // wait for completion
-    // context.wait();
+    uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
     // get result
     fib_type result;
@@ -217,5 +215,3 @@ TEST_CASE("Get fibonacci number", "[fib]")
     // check result
     REQUIRE(result == 267914296);
 }
-
-#endif

@@ -104,12 +104,13 @@ struct SimpleContext : public CnC::Context<SimpleContext>
     CnC::TagCollection<int> tags;
     CnC::StepCollection<SimpleStep> steps;
 
-    int result;
+    int result, sum;
 
     SimpleContext() : CnC::Context<SimpleContext>(), 
         tags(*this), 
         steps(*this), 
-        result(0)
+        result(0), 
+        sum(0)
     {
         tags.prescribes(steps, *this);
     }
@@ -117,7 +118,10 @@ struct SimpleContext : public CnC::Context<SimpleContext>
 
 int SimpleStep::execute(const int &tag, SimpleContext &context) const
 {
+    //std::cout << "start " << tag << std::endl;
     context.result = tag + 1;
+    context.sum += tag; // MEMO: this line is not thread safe
+    //std::cout << "end " << tag << std::endl;
     return 0;
 }
 
@@ -127,6 +131,15 @@ TEST_CASE("Simple step execution", "[StepCollection]")
     context.tags.put(7);
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     REQUIRE(context.result == 8);
+}
+
+TEST_CASE("Iterative step execution", "[StepCollection]")
+{
+    SimpleContext context;
+    for (int i = 1; i <= 100; i++)
+        context.tags.put(i);
+    uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+    REQUIRE(context.sum == 5050);
 }
 
 #if 0

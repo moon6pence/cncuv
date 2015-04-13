@@ -37,11 +37,15 @@ private:
     Arg &_arg;
 };
 
+template <typename Tag, typename UserStep, typename Arg>
 class StepInstance
 {
 public:
-    StepInstance(std::function<int(void)> &&stepFunc) : _stepFunc(stepFunc) 
-    { 
+    StepInstance(const StepCollection<UserStep> &stepCollection, const Tag &tag, Arg &arg) :
+        _stepCollection(stepCollection), 
+        _tag(tag), // copy tag here
+        _arg(arg)
+    {
         _request.data = this;
     }
 
@@ -54,7 +58,7 @@ private:
     static void _run(uv_work_t *req)
     {
         StepInstance *_this = (StepInstance *)req->data;
-        _this->_stepFunc();
+        _this->_stepCollection.step.execute(_this->_tag, _this->_arg);
     }
 
     static void _finalize(uv_work_t *req, int status)
@@ -63,8 +67,11 @@ private:
         delete _this;
     }
 
+    const StepCollection<UserStep> &_stepCollection;
+    Tag _tag;
+    Arg &_arg;
+
     uv_work_t _request;
-    std::function<int(void)> _stepFunc;
 };
 
 // StepLauncherAsync
@@ -79,7 +86,7 @@ public:
 
     void executeStep(const Tag &tag) override
     {
-        StepInstance *instance = new StepInstance(std::bind(&UserStep::execute, &_stepCollection.step, std::cref(tag), std::ref(_arg)));
+        auto *instance = new StepInstance<Tag, UserStep, Arg>(_stepCollection, tag, _arg);
 
         // async call
         instance->invoke();

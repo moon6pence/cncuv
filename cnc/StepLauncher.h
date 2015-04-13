@@ -44,7 +44,8 @@ public:
     StepInstance(const StepCollection<UserStep> &stepCollection, const Tag &tag, Arg &arg) :
         _stepCollection(stepCollection), 
         _tag(tag), // copy tag here
-        _arg(arg)
+        _arg(arg), 
+        _retry(false)
     {
         _request.data = this;
     }
@@ -58,12 +59,40 @@ private:
     static void _run(uv_work_t *req)
     {
         StepInstance *_this = (StepInstance *)req->data;
-        _this->_stepCollection.step.execute(_this->_tag, _this->_arg);
+        _this->run();
+    }
+
+    void run()
+    {
+        try
+        {
+            _stepCollection.step.execute(_tag, _arg);
+        }
+        catch (cannot_find_item &)
+        {
+            // std::cerr << "Retry step with tag: " << _tag << std::endl;
+
+            // reinvoke step after callback
+            _retry = true;
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << "Exception from step: " << e.what() << std::endl;
+        }
     }
 
     static void _finalize(uv_work_t *req, int status)
     {
         StepInstance *_this = (StepInstance *)req->data;
+
+        if (_this->_retry)
+        {
+            // reinvoke step
+            _this->_retry = false;
+            _this->invoke();
+            return;
+        }
+
         delete _this;
     }
 
@@ -72,6 +101,7 @@ private:
     Arg &_arg;
 
     uv_work_t _request;
+    bool _retry;
 };
 
 // StepLauncherAsync

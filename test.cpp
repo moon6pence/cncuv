@@ -1,4 +1,5 @@
 #include <uv.h>
+#include <atomic>
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
@@ -104,7 +105,8 @@ struct SimpleContext : public CnC::Context<SimpleContext>
     CnC::TagCollection<int> tags;
     CnC::StepCollection<SimpleStep> steps;
 
-    int result, sum;
+    int result;
+    std::atomic<int> sum;
 
     SimpleContext() : CnC::Context<SimpleContext>(), 
         tags(*this), 
@@ -118,10 +120,10 @@ struct SimpleContext : public CnC::Context<SimpleContext>
 
 int SimpleStep::execute(const int &tag, SimpleContext &context) const
 {
-    //std::cout << "start " << tag << std::endl;
+    // std::cout << "start " << tag << std::endl;
     context.result = tag + 1;
-    context.sum += tag; // MEMO: this line is not thread safe
-    //std::cout << "end " << tag << std::endl;
+    context.sum += tag; // this line have to be thread safe
+    // std::cout << "end " << tag << std::endl;
     return 0;
 }
 
@@ -176,20 +178,18 @@ struct FibContext : public CnC::Context<FibContext>
 
 int FibStep::execute(const int &tag, FibContext &context) const
 {
-    switch (tag) 
-    {
-        case 0: context.fibs.put(tag, 0); break;
-        case 1: context.fibs.put(tag, 1); break;
-        default:
-            // get previous 2 results
-            fib_type f_1; context.fibs.get(tag - 1, f_1);
-            fib_type f_2; context.fibs.get(tag - 2, f_2);
+    // std::cout << "start " << tag << std::endl;
 
-            // std::cout << f_1 << " + " << f_2 << " = " << (f_1 + f_2) << std::endl;
+    // get previous 2 results
+    fib_type f_1; context.fibs.get(tag - 1, f_1);
+    fib_type f_2; context.fibs.get(tag - 2, f_2);
 
-            // put our result
-            context.fibs.put(tag, f_1 + f_2);
-    }
+    // std::cout << f_1 << " + " << f_2 << " = " << (f_1 + f_2) << std::endl;
+
+    // put our result
+    context.fibs.put(tag, f_1 + f_2);
+
+    // std::cout << "end " << tag << std::endl;
 
     return 0;
 }
@@ -201,8 +201,12 @@ TEST_CASE("Get fibonacci number", "[fib]")
     // create context
     FibContext context;
 
+    // seed
+    context.fibs.put(0, 0);
+    context.fibs.put(1, 1);
+
     // put tags to initiate evaluation
-    for (int i = 0; i <= n; ++i)
+    for (int i = 2; i <= n; ++i)
         context.tags.put(i);
 
     // wait for completion

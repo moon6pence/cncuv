@@ -55,9 +55,12 @@ public:
     template <typename Derived>
     StepCollection(Context<Derived> &context);
 
-    void put(const Tag &t);
+    void put(const Tag &tag);
 
     const UserStep step;
+
+private:
+    std::unique_ptr<StepLauncherBase<Tag>> _stepLauncher;
 };
 
 // Context

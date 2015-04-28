@@ -6,7 +6,7 @@
 namespace CnC {
 
 // forward declarations
-template <typename UserStep>
+template <typename Tag, typename UserStep>
 class StepCollection;
 
 // StepLauncherBase
@@ -22,7 +22,7 @@ template <typename Tag, typename UserStep, typename Arg>
 class StepLauncher : public StepLauncherBase<Tag>
 {
 public:
-    StepLauncher(const StepCollection<UserStep> &stepCollection, Arg &arg) :
+    StepLauncher(const StepCollection<Tag, UserStep> &stepCollection, Arg &arg) :
         _stepCollection(stepCollection), _arg(arg)
     {
     }
@@ -33,7 +33,7 @@ public:
     }
 
 private:
-    const StepCollection<UserStep> &_stepCollection;
+    const StepCollection<Tag, UserStep> &_stepCollection;
     Arg &_arg;
 };
 
@@ -41,7 +41,7 @@ template <typename Tag, typename UserStep, typename Arg>
 class StepInstance
 {
 public:
-    StepInstance(const StepCollection<UserStep> &stepCollection, const Tag &tag, Arg &arg) :
+    StepInstance(const StepCollection<Tag, UserStep> &stepCollection, const Tag &tag, Arg &arg) :
         _stepCollection(stepCollection), 
         _tag(tag), // copy tag here
         _arg(arg), 
@@ -96,7 +96,7 @@ private:
         delete _this;
     }
 
-    const StepCollection<UserStep> &_stepCollection;
+    const StepCollection<Tag, UserStep> &_stepCollection;
     Tag _tag;
     Arg &_arg;
 
@@ -109,7 +109,7 @@ template <typename Tag, typename UserStep, typename Arg>
 class StepLauncherAsync : public StepLauncherBase<Tag>
 {
 public:
-    StepLauncherAsync(const StepCollection<UserStep> &stepCollection, Arg &arg) :
+    StepLauncherAsync(const StepCollection<Tag, UserStep> &stepCollection, Arg &arg) :
         _stepCollection(stepCollection), _arg(arg)
     {
     }
@@ -123,7 +123,7 @@ public:
     }
 
 private:
-    const StepCollection<UserStep> &_stepCollection;
+    const StepCollection<Tag, UserStep> &_stepCollection;
     Arg &_arg;
 };
 

@@ -11,7 +11,7 @@ TagCollection<Tag>::TagCollection(Context<Derived> &context)
 
 template <typename Tag>
 template <typename UserStep, typename Arg>
-void TagCollection<Tag>::prescribes(const StepCollection<UserStep> &stepCollection, Arg &arg)
+void TagCollection<Tag>::prescribes(const StepCollection<Tag, UserStep> &stepCollection, Arg &arg)
 {
     // Initiate new step launcher
     // StepLauncherBase<Tag> *stepLauncher = new StepLauncher<Tag, UserStep, Arg>(stepCollection, arg);

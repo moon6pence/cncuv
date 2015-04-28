@@ -12,7 +12,7 @@ namespace CnC {
 template <typename Derived> 
 class Context;
 
-template <typename UserStep>
+template <typename Tag, typename UserStep>
 class StepCollection;
 
 // TagCollection
@@ -24,7 +24,7 @@ public:
     TagCollection(Context<Derived> &context);
 
     template <typename UserStep, typename Arg>
-    void prescribes(const StepCollection<UserStep> &stepCollection, Arg &arg);
+    void prescribes(const StepCollection<Tag, UserStep> &stepCollection, Arg &arg);
 
     void put(const Tag &t);
 
@@ -48,12 +48,14 @@ private:
 };
 
 // StepCollection
-template <typename UserStep>
+template <typename Tag, typename UserStep>
 class StepCollection
 {
 public:
     template <typename Derived>
     StepCollection(Context<Derived> &context);
+
+    void put(const Tag &t);
 
     const UserStep step;
 };

@@ -3,10 +3,15 @@
 
 namespace CnC {
 
-template <typename UserStep>
+template <typename Tag, typename UserStep>
 template <typename Derived>
-StepCollection<UserStep>::StepCollection(Context<Derived> &context) : 
+StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context) : 
     step(UserStep())
+{
+}
+
+template <typename Tag, typename UserStep>
+void StepCollection<Tag, UserStep>::put(const Tag &t)
 {
 }
 

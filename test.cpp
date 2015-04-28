@@ -103,7 +103,7 @@ struct SimpleStep
 struct SimpleContext : public CnC::Context<SimpleContext>
 {
     CnC::TagCollection<int> tags;
-    CnC::StepCollection<SimpleStep> steps;
+    CnC::StepCollection<int, SimpleStep> steps;
 
     int result;
     std::atomic<int> sum;
@@ -156,7 +156,7 @@ struct FibStep
 
 struct FibContext : public CnC::Context<FibContext>
 {
-    CnC::StepCollection<FibStep> steps;
+    CnC::StepCollection<int, FibStep> steps;
     CnC::ItemCollection<int, fib_type> fibs;
     CnC::TagCollection<int> tags;
 

@@ -55,15 +55,6 @@ public:
     template <typename Derived>
     StepCollection(Context<Derived> &context);
 
-    template <typename Tag, typename Item>
-    void consumes(ItemCollection<Tag, Item> &dataCollection);
-
-    template <typename Tag, typename Item>
-    void produces(ItemCollection<Tag, Item> &dataCollection);
-
-    template <typename Tag>
-    void controls(TagCollection<Tag> &tagCollection);
-
     const UserStep step;
 };
 

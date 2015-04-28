@@ -167,12 +167,6 @@ struct FibContext : public CnC::Context<FibContext>
     {
         // Prescriptive relations
         tags.prescribes(steps, *this);
-
-        // MEMO: actually, current CnC model doesn't need producer and consumer relationships. 
-        // Consumer relations
-        // steps.consumes(fibs);
-        // Producer relations
-        // steps.produces(fibs);
     }
 };
 

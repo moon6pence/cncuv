@@ -12,26 +12,6 @@ namespace CnC {
 template <typename Derived> 
 class Context;
 
-template <typename Tag, typename UserStep>
-class StepCollection;
-
-// TagCollection
-template <typename Tag>
-class TagCollection
-{
-public:
-    template <typename Derived>
-    TagCollection(Context<Derived> &context);
-
-    template <typename UserStep, typename Arg>
-    void prescribes(const StepCollection<Tag, UserStep> &stepCollection, Arg &arg);
-
-    void put(const Tag &t);
-
-private:
-    std::unique_ptr<StepLauncherBase<Tag>> _stepLauncher;
-};
-
 // ItemCollection
 template <typename Tag, typename Item>
 class ItemCollection
@@ -72,7 +52,6 @@ class Context
 }; // namespace CnC
 
 // Implementation
-#include "TagCollection.h"
 #include "ItemCollection.h"
 #include "StepCollection.h"
 

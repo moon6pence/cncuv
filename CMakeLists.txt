@@ -14,7 +14,6 @@ link_directories("${PROJECT_SOURCE_DIR}/libuv/lib")
 
 add_executable(cncuv.test 
     test.cpp 
-    cnc/TagCollection.h
     cnc/ItemCollection.h
     cnc/StepCollection.h
     cnc/StepLauncher.h

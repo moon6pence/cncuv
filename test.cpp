@@ -102,19 +102,16 @@ struct SimpleStep
 
 struct SimpleContext : public CnC::Context<SimpleContext>
 {
-    CnC::TagCollection<int> tags;
     CnC::StepCollection<int, SimpleStep> steps;
 
     int result;
     std::atomic<int> sum;
 
     SimpleContext() : CnC::Context<SimpleContext>(), 
-        tags(*this), 
         steps(*this), 
         result(0), 
         sum(0)
     {
-        tags.prescribes(steps, *this);
     }
 };
 
@@ -130,7 +127,6 @@ int SimpleStep::execute(const int &tag, SimpleContext &context) const
 TEST_CASE("Simple step execution", "[StepCollection]")
 {
     SimpleContext context;
-    //context.tags.put(7);
     context.steps.put(7);
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     REQUIRE(context.result == 8);
@@ -140,7 +136,6 @@ TEST_CASE("Iterative step execution", "[StepCollection]")
 {
     SimpleContext context;
     for (int i = 1; i <= 100; i++)
-        //context.tags.put(i);
         context.steps.put(i);
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     REQUIRE(context.sum == 5050);
@@ -160,15 +155,11 @@ struct FibContext : public CnC::Context<FibContext>
 {
     CnC::StepCollection<int, FibStep> steps;
     CnC::ItemCollection<int, fib_type> fibs;
-    CnC::TagCollection<int> tags;
 
     FibContext() : CnC::Context<FibContext>(), 
         steps(*this), 
-        fibs(),
-        tags(*this)
+        fibs()
     {
-        // Prescriptive relations
-        tags.prescribes(steps, *this);
     }
 };
 
@@ -203,7 +194,6 @@ TEST_CASE("Get fibonacci number", "[fib]")
 
     // put tags to initiate evaluation
     for (int i = 2; i <= n; ++i)
-        //context.tags.put(i);
         context.steps.put(i);
 
     // wait for completion

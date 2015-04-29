@@ -108,7 +108,8 @@ struct SimpleContext : public CnC::Context<SimpleContext>
     std::atomic<int> sum;
 
     SimpleContext() : CnC::Context<SimpleContext>(), 
-        steps(*this), 
+        // steps(*this), 
+        steps(*this, *this), // test: pass context as argument explicitly
         result(0), 
         sum(0)
     {

@@ -35,6 +35,9 @@ public:
     template <typename Derived>
     StepCollection(Context<Derived> &context);
 
+    template <typename Derived, typename Arg>
+    StepCollection(Context<Derived> &context, Arg &arg);
+
     void put(const Tag &tag);
 
     const UserStep step;

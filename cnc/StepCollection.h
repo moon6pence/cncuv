@@ -8,7 +8,16 @@ template <typename Derived>
 StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context) : 
     step(UserStep())
 {
+    // Pass context as step argument
     auto *stepLauncher = new StepLauncherAsync<Tag, UserStep, Derived>(*this, static_cast<Derived &>(context));
+    _stepLauncher.reset(stepLauncher);
+}
+
+template <typename Tag, typename UserStep>
+template <typename Derived, typename Arg>
+StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context, Arg &arg)
+{
+    auto *stepLauncher = new StepLauncherAsync<Tag, UserStep, Arg>(*this, arg);
     _stepLauncher.reset(stepLauncher);
 }
 

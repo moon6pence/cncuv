@@ -12,11 +12,20 @@ include_directories("${PROJECT_SOURCE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/libuv/include")
 link_directories("${PROJECT_SOURCE_DIR}/libuv/lib")
 
-add_executable(cncuv.test 
-    test.cpp 
+# cncuv
+add_library(cncuv
     cnc/ItemCollection.h
     cnc/StepCollection.h
     cnc/StepLauncher.h
-    cnc/cnc.h)
+    cnc/cnc.h
+    cnc/cnc.cpp)
 
-target_link_libraries(cncuv.test libuv Ws2_32 psapi Iphlpapi)
+target_link_libraries(cncuv libuv Ws2_32 psapi Iphlpapi)
+
+# cncuv.test
+add_executable(cncuv.test test.cpp)
+target_link_libraries(cncuv.test cncuv)
+
+# fib
+add_executable(fib example/fib.cpp)
+target_link_libraries(fib cncuv)

@@ -29,3 +29,7 @@ target_link_libraries(cncuv.test cncuv)
 # fib
 add_executable(fib example/fib.cpp)
 target_link_libraries(fib cncuv)
+
+# empty_task
+add_executable(empty_task example/empty_task.cpp)
+target_link_libraries(empty_task cncuv)

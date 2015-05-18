@@ -1,8 +1,5 @@
 #include <cnc/cnc.h>
 
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-
 struct FibContext;
 
 // declare data type for fibonacci
@@ -43,9 +40,9 @@ int FibStep::execute(const int &tag, FibContext &context) const
     return 0;
 }
 
-TEST_CASE("Get fibonacci number", "[fib]")
+int main()
 {
-    int n = 42;
+    const int n = 42;
 
     // create context
     FibContext context;
@@ -66,5 +63,8 @@ TEST_CASE("Get fibonacci number", "[fib]")
     context.fibs.get(n, result);
 
     // check result
-    REQUIRE(result == 267914296);
+	if (result == 267914296)
+		std::cout << "fib(" << n << ") = " << result << std::endl;
+	else
+		std::cout << "wrong answer: " << result << std::endl;
 }

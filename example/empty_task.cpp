@@ -33,6 +33,9 @@ int main()
 {
 	const int n = 10000000;
 
+	// set thread pool size
+	CnC::setThreadPoolSize(1);
+
 	// create context
 	empty_context context;
 

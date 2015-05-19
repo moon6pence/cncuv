@@ -52,6 +52,9 @@ class Context
 {
 };
 
+// Utility functions
+void setThreadPoolSize(int n);
+
 }; // namespace CnC
 
 // Implementation

@@ -15,7 +15,8 @@ StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context) :
 
 template <typename Tag, typename UserStep>
 template <typename Derived, typename Arg>
-StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context, Arg &arg)
+StepCollection<Tag, UserStep>::StepCollection(Context<Derived> &context, Arg &arg) :
+    step(UserStep())
 {
     auto *stepLauncher = new StepLauncherAsync<Tag, UserStep, Arg>(*this, arg);
     _stepLauncher.reset(stepLauncher);

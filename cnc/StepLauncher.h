@@ -12,6 +12,8 @@ namespace CnC {
 template <typename Tag, typename UserStep>
 class StepCollection;
 
+class cannot_find_item;
+
 // StepLauncherBase
 template <typename Tag>
 class StepLauncherBase

@@ -42,3 +42,7 @@ target_link_libraries(fib cncuv)
 # empty_task
 add_executable(empty_task example/empty_task.cpp)
 target_link_libraries(empty_task cncuv)
+
+# blackscholes
+add_executable(blackscholes example/blackscholes.cpp)
+target_link_libraries(blackscholes cncuv)

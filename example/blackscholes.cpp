@@ -64,7 +64,7 @@
 
 // Precision to use for calculations
 #define fptype float
-#define ERR_CHK
+//#define ERR_CHK
 #define NUM_RUNS 100
 
 typedef struct OptionData_ 
@@ -333,9 +333,9 @@ int main (int argc, char **argv)
 	{
 		nThreads = -1;  // Not specified
 	}
-	printf("Number of Options: %d\n", numOptions);
-	printf("Number of Runs: %d\n", NUM_RUNS);
-	printf("Granularity: %d\n", granularity);
+	//printf("Number of Options: %d\n", numOptions);
+	//printf("Number of Runs: %d\n", NUM_RUNS);
+	//printf("Granularity: %d\n", granularity);
 
     // Set the number of threads for the execution of the CnC graph
     if (nThreads > 0) // If specified by user
@@ -375,7 +375,8 @@ int main (int argc, char **argv)
 	// toc
 	auto end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> elapsed_msec = end - start;
-	std::cout << "Elapsed time: " << elapsed_msec.count() << " msec" << std::endl;
+	//std::cout << "Elapsed time: " << elapsed_msec.count() << " msec" << std::endl;
+	std::cout << elapsed_msec.count() << std::endl;
 
     return 0;
 }
